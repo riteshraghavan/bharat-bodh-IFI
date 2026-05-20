@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Bodh: Project Dashboard & AI Suite</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#FDFBF7', // Warm off-white background
+                            surface: '#F4EFEA', // Slightly darker for cards
+                            primary: '#4A3B32', // Deep earthy brown for text
+                            accent: '#C85A17', // Terracotta/Saffron accent
+                            accentLight: '#E8A375',
+                            border: '#E2D9D0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                        serif: ['Merriweather', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Chart Container Styling - Mandatory Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        /* Custom scrollbar for content areas */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #F4EFEA;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #C85A17;
+            border-radius: 10px;
+        }
+
+        /* Unicode icon styling */
+        .u-icon {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-style: normal;
+        }
+    </style>
+
+    <!-- Chosen Palette: Warm Neutrals & Saffron (Brand Light, Surface, Primary Brown, Terracotta Accent). Chosen to reflect Indian heritage, earthiness, and academia while maintaining high modern readability. -->
+    
+    <!-- Application Structure Plan: A centralized, single-page dashboard layout. 
+         Reasoning: The original DPR is a lengthy, dense textual document. To make this "consumable and explorable" for stakeholders (like Fiinovation or CSR donors), a dashboard approach is optimal. 
+         Flow: 
+         1. Executive summary metrics (quick stats at the top).
+         2. The Core Strategy (understanding the Dual-Track approach).
+         3. Interactive Financials & Impact (Charts to visualize budget and reach).
+         4. Geographic Rollout (Interactive timeline/tab system to explore the 3-year plan, highlighting 3 major Swadeshi Indology National Conferences).
+         5. Dynamic AI Suite (Interactive chatbot, quiz engine, and academic symposium architect powered by the Gemini API).
+         6. Components & Branding (Grid layouts for easy scanning of the 9 components and 25 branding elements).
+         This non-linear structure allows donors to instantly find what they care about (Budget, Impact, Branding) while retaining the academic context. -->
+    
+    <!-- Visualization & Content Choices: 
+         - Budget Breakdown -> Doughnut Chart (Chart.js) -> Hover tooltips -> Shows clear % distribution of INR 3.3 Cr.
+         - Target Beneficiaries -> Bar Chart (Chart.js) -> Hover tooltips -> Contrasts the massive student scale vs faculty/scholars.
+         - Geographic Rollout -> JS-driven Interactive Tabs + List -> Clickable phases -> Highlights the 3 Swadeshi Indology National Conferences.
+         - Core Strategy -> CSS styled dual-column layout -> Visualizes the 'Academic' vs 'Van' track clearly.
+         - NO SVG/Mermaid used. CSS styling and Unicode emojis are used for iconography. -->
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+
+<body class="bg-brand-light text-brand-primary font-sans antialiased overflow-x-hidden">
+
+    <!-- Top Navigation / Header -->
+    <header class="sticky top-0 z-50 bg-brand-light/90 backdrop-blur-md border-b border-brand-border shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl u-icon text-brand-accent">&#127891;</span>
+                    <span class="font-serif font-bold text-xl tracking-tight text-brand-primary">Bharat Bodh</span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#overview" class="text-sm font-medium hover:text-brand-accent transition-colors">Overview</a>
+                    <a href="#strategy" class="text-sm font-medium hover:text-brand-accent transition-colors">Strategy</a>
+                    <a href="#impact" class="text-sm font-medium hover:text-brand-accent transition-colors">Impact & Budget</a>
+                    <a href="#rollout" class="text-sm font-medium hover:text-brand-accent transition-colors">Geographic Rollout</a>
+                    <a href="#ai-suite" class="text-sm font-medium hover:text-brand-accent transition-colors">✨ AI Suite</a>
+                    <a href="#branding" class="text-sm font-medium hover:text-brand-accent transition-colors">CSR Branding</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-brand-primary focus:outline-none">
+                        <span class="text-2xl u-icon">&#9776;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-surface border-b border-brand-border p-4 space-y-2">
+            <a href="#overview" class="block text-sm font-medium hover:text-brand-accent">Overview</a>
+            <a href="#strategy" class="block text-sm font-medium hover:text-brand-accent">Strategy</a>
+            <a href="#impact" class="block text-sm font-medium hover:text-brand-accent">Impact & Budget</a>
+            <a href="#rollout" class="block text-sm font-medium hover:text-brand-accent">Rollout</a>
+            <a href="#ai-suite" class="block text-sm font-medium hover:text-brand-accent">✨ AI Suite</a>
+            <a href="#branding" class="block text-sm font-medium hover:text-brand-accent">Branding</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- SECTION 1: Executive Overview -->
+        <section id="overview" class="pt-8">
+            <div class="text-center max-w-4xl mx-auto mb-10">
+                <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-primary mb-4 leading-tight">
+                    National Indian Heritage & <br><span class="text-brand-accent">Civilisational Education Initiative</span>
+                </h1>
+                <p class="text-lg text-brand-primary/80 mb-8">
+                    An interactive overview of the 30-month CSR initiative bridging the gap between mainstream tertiary education and India's profound indigenous knowledge systems across Tamil Nadu.
+                </p>
+                
+                <!-- Quick KPI Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-2xl mb-2 u-icon text-brand-accent">&#128176;</div>
+                        <div class="text-2xl font-bold text-brand-primary">₹3.3 Cr</div>
+                        <div class="text-xs uppercase tracking-wide text-brand-primary/60 font-semibold mt-1">Total Budget</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-2xl mb-2 u-icon text-brand-accent">&#8987;</div>
+                        <div class="text-2xl font-bold text-brand-primary">30</div>
+                        <div class="text-xs uppercase tracking-wide text-brand-primary/60 font-semibold mt-1">Months Duration</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-2xl mb-2 u-icon text-brand-accent">&#127979;</div>
+                        <div class="text-2xl font-bold text-brand-primary">36</div>
+                        <div class="text-xs uppercase tracking-wide text-brand-primary/60 font-semibold mt-1">Premier Campuses</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-2xl mb-2 u-icon text-brand-accent">&#128104;&#8205;&#127891;</div>
+                        <div class="text-2xl font-bold text-brand-primary">20k+</div>
+                        <div class="text-xs uppercase tracking-wide text-brand-primary/60 font-semibold mt-1">Direct Students</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Core Strategy & Components -->
+        <section id="strategy" class="pt-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">The Dual-Track Strategy</h2>
+                <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
+                    This section illustrates the core architectural approach of Bharat Bodh. To effectively mainstream Indian Knowledge Systems (IKS), the project abandons a monolithic approach in favor of a dual-track delivery system. It simultaneously targets elite academic rigor and broad public awareness, ensuring both deep scholarship and wide democratization of knowledge.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Academic Track -->
+                <div class="bg-brand-surface rounded-2xl p-8 border border-brand-border relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-6 opacity-10 text-6xl u-icon transform group-hover:scale-110 transition-transform duration-500">&#128218;</div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-2 flex items-center">
+                        <span class="mr-2 text-brand-accent u-icon">&#9876;</span> Track 1: Academic Rigor
+                    </h3>
+                    <p class="text-sm font-semibold text-brand-accent mb-4">Core Focus: University Ecosystems</p>
+                    <ul class="space-y-3 text-brand-primary/80">
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> High-level seminars & conferences challenging Eurocentric frameworks.</li>
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> Republication of the 14-volume 'History of Indian Science and Technology' (HIST).</li>
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> Scholar Mentorship program cultivating 200+ PhDs and young researchers.</li>
+                    </ul>
+                </div>
+
+                <!-- Van Track -->
+                <div class="bg-brand-surface rounded-2xl p-8 border border-brand-border relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-6 opacity-10 text-6xl u-icon transform group-hover:scale-110 transition-transform duration-500">&#128656;</div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-2 flex items-center">
+                        <span class="mr-2 text-brand-accent u-icon">&#128225;</span> Track 2: Mobile Awareness
+                    </h3>
+                    <p class="text-sm font-semibold text-brand-accent mb-4">Auxiliary Focus: Campus Democratization</p>
+                    <ul class="space-y-3 text-brand-primary/80">
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> 14-seater solar-hybrid Mobile Heritage Library Van deploying directly to colleges.</li>
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> Distribution of bilingual, accessible, jargon-free booklets and materials.</li>
+                        <li class="flex items-start"><span class="mr-2 text-brand-accent mt-1 u-icon">&#9654;</span> Digital kiosks and outdoor AV canopy for massive student engagement.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project Components Interactive Tabs -->
+            <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
+                <div class="p-6 border-b border-brand-border bg-brand-surface/50">
+                    <h3 class="text-xl font-bold text-brand-primary">The 9 Project Components</h3>
+                    <p class="text-sm text-brand-primary/70 mt-1">Explore the structural pillars driving the initiative.</p>
+                </div>
+                <div class="flex flex-col md:flex-row h-full md:h-96">
+                    <!-- Tab Headers -->
+                    <div class="w-full md:w-1/3 border-r border-brand-border bg-brand-light custom-scroll overflow-y-auto" id="component-tabs">
+                        <!-- Populated by JS -->
+                    </div>
+                    <!-- Tab Content -->
+                    <div class="w-full md:w-2/3 p-8 bg-white" id="component-content">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Impact & Financials -->
+        <section id="impact" class="pt-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">Data Visualization: Impact & Allocation</h2>
+                <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
+                    Transparency and measurable outcomes are central to this CSR initiative. This section visualizes the precise financial allocation of the INR 3.3 Crore grant across operational streams, and projects the targeted human impact across different academic tiers in Tamil Nadu.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Budget Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-border flex flex-col">
+                    <h3 class="text-xl font-bold text-brand-primary mb-1">Financial Allocation (INR 3.3 Cr)</h3>
+                    <p class="text-sm text-brand-primary/60 mb-6">Percentage breakdown of project funds over 30 months.</p>
+                    
+                    <div class="flex-grow flex items-center justify-center">
+                        <!-- Mandatory Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beneficiaries Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-border flex flex-col">
+                    <h3 class="text-xl font-bold text-brand-primary mb-1">Target Beneficiaries</h3>
+                    <p class="text-sm text-brand-primary/60 mb-6">Direct audience reach across the Tamil Nadu ecosystem.</p>
+                    
+                    <div class="flex-grow flex items-center justify-center">
+                        <!-- Mandatory Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="beneficiariesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Geographic Rollout with Swadeshi Indology National Conferences -->
+        <section id="rollout" class="pt-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">Phased Geographic Rollout</h2>
+                <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
+                    To minimize logistical overhead and maximize regional momentum, the Mobile Library Van follows a highly structured, continuous geographical loop. Each geographic phase culminates in a broad **Swadeshi Indology National Conference** co-sponsored by partner universities to consolidate regional research. Explore the rollout schedule below.
+                </p>
+            </div>
+
+            <div class="bg-brand-surface rounded-2xl border border-brand-border p-6 md:p-8">
+                
+                <!-- Timeline Controls -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                    <button onclick="setPhase(0)" id="btn-phase-0" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-brand-primary text-white shadow-md">
+                        Phase 1: Northern Launch
+                        <span class="block text-xs font-normal opacity-80">(Sept - Mar | 12 Campuses)</span>
+                    </button>
+                    <div class="hidden md:block h-1 flex-grow bg-brand-border relative">
+                        <div id="timeline-progress" class="absolute top-0 left-0 h-full bg-brand-accent transition-all duration-500 w-1/3"></div>
+                    </div>
+                    <button onclick="setPhase(1)" id="btn-phase-1" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-brand-primary border border-brand-border hover:border-brand-accent">
+                        Phase 2: Delta & South
+                        <span class="block text-xs font-normal opacity-80">(Apr - Mar | 12 Campuses)</span>
+                    </button>
+                    <div class="hidden md:block h-1 flex-grow bg-brand-border"></div>
+                    <button onclick="setPhase(2)" id="btn-phase-2" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-brand-primary border border-brand-border hover:border-brand-accent">
+                        Phase 3: West & Loop
+                        <span class="block text-xs font-normal opacity-80">(Apr - Feb | 12 Campuses)</span>
+                    </button>
+                </div>
+
+                <!-- Swadeshi Indology National Conference Highlight (Dynamic) -->
+                <div class="mb-8" id="major-seminars-container">
+                    <!-- Populated dynamically based on phase selection -->
+                </div>
+
+                <!-- Rollout Content Display -->
+                <div class="bg-white rounded-xl p-6 shadow-inner custom-scroll max-h-[500px] overflow-y-auto">
+                    <div class="flex items-center justify-between mb-6 border-b border-brand-border pb-4">
+                        <div>
+                            <h3 id="phase-title" class="text-2xl font-serif font-bold text-brand-accent">Year 1: High-Intensity Launch Circuit</h3>
+                            <p id="phase-desc" class="text-brand-primary/70 mt-1">Focus Area: Chennai, Kanchipuram, and Vellore (Northern Cluster)</p>
+                        </div>
+                        <div class="text-4xl u-icon opacity-20 hidden sm:block">&#128205;</div>
+                    </div>
+                    
+                    <div id="institutions-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: ✨ Interactive AI Suite (Gemini Integration) -->
+        <section id="ai-suite" class="pt-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">✨ Bharat Bodh Interactive AI Suite</h2>
+                <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
+                    This section demonstrates dynamic, real-time engagement powered by the **Gemini API**. It translates deep scientific and cultural assets into interactive experiences, allowing university scholars, students, and coordinators to instantly query historical data, test their understanding with quizzes, or generate detailed academic symposium syllabi on demand.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
+                <!-- AI Tabs Header -->
+                <div class="flex border-b border-brand-border bg-brand-surface">
+                    <button onclick="switchAITab('chat')" id="ai-tab-chat" class="flex-1 py-4 text-center font-bold text-sm transition-all border-b-2 border-brand-accent text-brand-accent bg-white">
+                        <span class="u-icon mr-1">&#128172;</span> ✨ Indology Scholar AI
+                    </button>
+                    <button onclick="switchAITab('quiz')" id="ai-tab-quiz" class="flex-1 py-4 text-center font-bold text-sm transition-all text-brand-primary hover:bg-white/50 border-b-2 border-transparent">
+                        <span class="u-icon mr-1">&#127918;</span> ✨ Dynamic Quiz Generator
+                    </button>
+                    <button onclick="switchAITab('symposium')" id="ai-tab-symposium" class="flex-1 py-4 text-center font-bold text-sm transition-all text-brand-primary hover:bg-white/50 border-b-2 border-transparent">
+                        <span class="u-icon mr-1">&#128213;</span> ✨ Symposium Architect
+                    </button>
+                </div>
+
+                <!-- AI Tab Body Content -->
+                <div class="p-6 min-h-[400px]">
+                    <!-- ERROR TOASTER (Custom Message Box, No alerts) -->
+                    <div id="ai-error-box" class="hidden mb-6 bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm rounded-r-lg">
+                        <div class="flex justify-between items-center">
+                            <span id="ai-error-text">An error occurred.</span>
+                            <button onclick="closeAIError()" class="font-bold text-lg leading-none hover:text-red-900">&times;</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: Chatbot -->
+                    <div id="ai-pane-chat" class="space-y-4">
+                        <p class="text-sm text-brand-primary/70 mb-4">
+                            Ask our virtual indigenous systems fellow anything regarding ancient Indian science, metallurgy, architecture, agriculture, or Sangam literature.
+                        </p>
+                        <!-- Chat suggestions -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button onclick="triggerChatPreset('How did ancient Tamils build water harvesting structures like Kallanai?')" class="text-xs bg-brand-surface hover:bg-brand-border px-3 py-1.5 rounded-full transition-colors">
+                                &#128073; Kallanai Hydraulics
+                            </button>
+                            <button onclick="triggerChatPreset('Tell me about the historical significance and engineering of Wootz steel.')" class="text-xs bg-brand-surface hover:bg-brand-border px-3 py-1.5 rounded-full transition-colors">
+                                &#128073; Wootz Steel Metallurgy
+                            </button>
+                            <button onclick="triggerChatPreset('Explain how Panini\'s Sanskrit grammar anticipates modern coding syntax.')" class="text-xs bg-brand-surface hover:bg-brand-border px-3 py-1.5 rounded-full transition-colors">
+                                &#128073; Sanskrit & Programming
+                            </button>
+                        </div>
+
+                        <div class="border border-brand-border rounded-xl bg-brand-light p-4 h-64 overflow-y-auto space-y-3 custom-scroll" id="chat-messages-box">
+                            <div class="bg-brand-surface p-3 rounded-xl max-w-xl text-sm leading-relaxed">
+                                <b>✨ Indology Scholar AI:</b> Vanakkam! I am programmed with Rajiv Malhotra's Swadeshi Indology research frameworks and the 14-volume History of Indian Science & Technology dataset. Ask me anything about ancient Indian scientific contributions.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input type="text" id="chat-user-input" placeholder="Type an Indology query (e.g., Temple acoustic designs)..." class="flex-1 border border-brand-border bg-brand-light px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-brand-accent">
+                            <button onclick="sendChatMessage()" id="chat-send-btn" class="bg-brand-accent hover:bg-brand-accent/90 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors flex items-center">
+                                Send <span class="ml-1 u-icon">&#10145;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Dynamic Quiz -->
+                    <div id="ai-pane-quiz" class="hidden space-y-4">
+                        <p class="text-sm text-brand-primary/70">
+                            Select a historical topic to dynamically generate a unique 3-question multiple choice quiz sourced from peer-reviewed civilisational research.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <select id="quiz-topic-select" class="flex-1 border border-brand-border bg-brand-light px-4 py-3 rounded-xl text-sm focus:outline-none">
+                                <option value="Ancient Tamil Metallurgy and Wootz Alloys">Ancient Tamil Metallurgy & Wootz Alloys</option>
+                                <option value="Hydraulic Engineering and Chola Water Systems">Hydraulic Engineering & Chola Water Systems</option>
+                                <option value="Sanskrit Grammar Syntactics and Paninis Algorithms">Sanskrit Grammar & Panini's Algorithms</option>
+                                <option value="Sacred Geometry and Temple Engineering Acoustics">Sacred Geometry & Temple Acoustics</option>
+                                <option value="Sangam Literature and Early Botanical Medicine">Sangam Literature & Early Botanical Medicine</option>
+                            </select>
+                            <button onclick="generateDynamicQuiz()" id="quiz-gen-btn" class="bg-brand-accent hover:bg-brand-accent/90 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors">
+                                ✨ Generate Quiz
+                            </button>
+                        </div>
+
+                        <!-- Active Quiz Box -->
+                        <div id="quiz-active-box" class="hidden border border-brand-border rounded-xl bg-brand-light p-6 space-y-6">
+                            <div class="flex justify-between items-center border-b border-brand-border pb-3">
+                                <span class="text-xs font-bold text-brand-accent uppercase tracking-wider" id="quiz-header-topic">metallurgy</span>
+                                <span class="text-xs text-brand-primary/60" id="quiz-question-counter">Question 1 of 3</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h4 class="text-lg font-bold text-brand-primary" id="quiz-question-text">Dynamic Question Text?</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quiz-options-container">
+                                    <!-- Dynamic Options Buttons -->
+                                </div>
+                            </div>
+
+                            <!-- Explanation Feedback -->
+                            <div id="quiz-explanation-box" class="hidden p-4 rounded-lg text-sm bg-brand-surface border border-brand-border">
+                                <span class="font-bold block mb-1 text-brand-accent" id="quiz-correct-indicator"></span>
+                                <span id="quiz-explanation-text">Detailed research context goes here...</span>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button onclick="nextQuizQuestion()" id="quiz-next-btn" class="hidden bg-brand-primary text-white font-bold px-6 py-2.5 rounded-lg text-sm hover:opacity-90">
+                                    Next Question
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Completion/Result State -->
+                        <div id="quiz-result-box" class="hidden border border-brand-border rounded-xl bg-brand-light p-8 text-center space-y-4 max-w-md mx-auto">
+                            <span class="text-5xl u-icon text-brand-accent">&#127881;</span>
+                            <h4 class="text-2xl font-serif font-bold text-brand-primary">Quiz Complete!</h4>
+                            <p class="text-sm text-brand-primary/70">You scored <span id="quiz-final-score" class="font-bold text-brand-accent text-lg">0</span> out of 3. Standard and co-branded digital certificates can be requested at our main campus kiosk.</p>
+                            <button onclick="resetQuizView()" class="bg-brand-primary text-white font-bold px-6 py-2 rounded-lg text-sm">
+                                Try Another Topic
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: ✨ Symposium Architect -->
+                    <div id="ai-pane-symposium" class="hidden space-y-4">
+                        <p class="text-sm text-brand-primary/70">
+                            Planning a regional seminar or major multi-day conference? Select your topic and targeted academic tier to dynamically draft a scholarly concept note, syllabus outline, call-for-papers (CFP) snippet, and a model academic abstract.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <select id="symposium-topic-select" class="col-span-1 border border-brand-border bg-brand-light px-4 py-3 rounded-xl text-sm focus:outline-none">
+                                <option value="Ancient Tamil Metallurgy & Wootz Steel Carbon Engineering">Wootz Steel Carbon Engineering</option>
+                                <option value="Chola Hydraulic Systems & Sustainable Water Management">Chola Hydraulic & Water Systems</option>
+                                <option value="Paninian Grammatical Algorithms & Modern Syntactic Programming">Panini Algorithms & Programming</option>
+                                <option value="Acoustic Engineering and Geometrical Harmony in Dravidian Temples">Temple Acoustics & Sacred Geometry</option>
+                                <option value="Sangam Literature & Ethnopedological Siddha Healing Botanicals">Sangam Literature & Siddha Medicine</option>
+                            </select>
+                            
+                            <select id="symposium-tier-select" class="col-span-1 border border-brand-border bg-brand-light px-4 py-3 rounded-xl text-sm focus:outline-none">
+                                <option value="Undergraduate Campus Seminar (Introductory and Visual)">Undergraduate Campus Seminar</option>
+                                <option value="Faculty Development Program (Methodology & Curriculum Integration)">Faculty Development Program</option>
+                                <option value="Doctoral Scholar Colloquium (Primary Sources Critique)">Doctoral Scholar Colloquium</option>
+                                <option value="International Indology Conference (Elite Panels & Comparative Studies)">International Indology Conference</option>
+                            </select>
+
+                            <button onclick="generateSymposiumSyllabus()" id="symposium-gen-btn" class="col-span-1 bg-brand-accent hover:bg-brand-accent/90 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors">
+                                ✨ Architect Symposium
+                            </button>
+                        </div>
+
+                        <div id="symposium-result-box" class="hidden border border-brand-border rounded-xl bg-brand-light p-6 space-y-4">
+                            <div class="flex justify-between items-center border-b border-brand-border pb-3">
+                                <h4 class="font-bold text-brand-accent text-sm flex items-center">
+                                    <span class="u-icon mr-1">&#128218;</span> Generated Academic Symposium Blueprint
+                                </h4>
+                                <button onclick="copySymposiumElement()" class="text-xs bg-brand-surface hover:bg-brand-border px-3 py-1.5 rounded transition-all">
+                                    Copy Academic Text
+                                </button>
+                            </div>
+                            <div class="text-sm text-brand-primary/90 leading-relaxed space-y-3 custom-scroll max-h-96 overflow-y-auto" id="symposium-text-output">
+                                <!-- AI Content -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: CSR Branding & Visibility -->
+        <section id="branding" class="pt-8 pb-16">
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">CSR Branding & Visibility Integration</h2>
+                <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
+                    Designed specifically to fulfill Schedule VII audit requirements and provide maximum ROI for the corporate patron. The project offers a comprehensive 25-point integration blueprint. Select a category below to explore specific branding touchpoints across physical assets, print media, digital presence, and employee engagement.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Navigation List -->
+                <div class="md:col-span-1 space-y-2" id="branding-nav">
+                    <!-- Populated by JS -->
+                </div>
+                
+                <!-- Content Display -->
+                <div class="md:col-span-3 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-brand-border">
+                    <div class="flex items-center mb-6">
+                        <span id="branding-icon" class="text-3xl mr-4 u-icon text-brand-accent"></span>
+                        <h3 id="branding-title" class="text-2xl font-bold text-brand-primary">Select a Category</h3>
+                    </div>
+                    <ul id="branding-items" class="space-y-4 text-brand-primary/80">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-primary text-brand-light py-8 border-t border-brand-primary/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <div class="font-serif font-bold text-xl">Bharat Bodh Initiative</div>
+                <div class="text-brand-light/60 text-sm mt-1">Infinity Foundation India (IFI) & Fiinovation</div>
+            </div>
+            <div class="text-sm text-brand-light/60 text-center md:text-right">
+                <p>Detailed Project Report Interactive Dashboard</p>
+                <p class="mt-1">Generated for alignment and analysis.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STORAGE ---
+
+        const componentsData = [
+            { title: "Mobile Library Van", icon: "&#128656;", desc: "Procurement of a 14-seater customized academic resource. Equipped with solar-hybrid systems, curated textbooks, digital kiosks, and retractable outdoor display canopies for campus visits." },
+            { title: "Awareness Campaigns", icon: "&#128226;", desc: "1-day sensitization drives on campuses. Focuses on introducing undergraduate students to Indian scientific heritage, sustainable traditional lifestyles, and historical innovations." },
+            { title: "Workshops & Seminars", icon: "&#127970;", desc: "Half-day or full-day high-level academic seminars. Deep-dive comparative studies hosted in collaboration with university departments (History, Science, Philosophy, Engineering)." },
+            { title: "Scholar Mentorship", icon: "&#129489;&#8205;&#127891;", desc: "Cultivating a network of 200+ young researchers and PhD candidates. Offering guidance, academic peer reviews, and platforms at major national conferences." },
+            { title: "Publications & Digital", icon: "&#128218;", desc: "Distribution of localized, bilingual (English/Tamil) booklet series and low-priced HIST editions. Includes a digital repository for recorded lectures and e-books." },
+            { title: "Monitoring & Eval", icon: "&#128202;", desc: "Rigorous data-driven tracking mechanisms: pre/post feedback surveys, van visitor logs, digital download trackers, and quarterly CSR progress reporting." },
+            { title: "Sustainability Strategy", icon: "&#127793;", desc: "Securing long-term Institutional MoUs with participating colleges to establish ongoing 'Bharat Bodh Study Circles' or 'IKS Clubs' post-van visit." },
+            { title: "Scalability Framework", icon: "&#128200;", desc: "Documenting SOPs, event checklists, and core curriculum kits to create a turnkey replication model for expanding the initiative to other Indian states." },
+            { title: "Donor Branding", icon: "&#129309;", desc: "Comprehensive integration of corporate CSR donor logo and identity into every stage. Facilitates structured corporate volunteer participation and guest academic slots." }
+        ];
+
+        const rolloutData = [
+            {
+                title: "Year 1: High-Intensity Launch Circuit",
+                desc: "Focus Area: Chennai, Kanchipuram, and Vellore (Northern Cluster). 2 institutions per month.",
+                seminars: [
+                    {
+                        date: "March 2027 (End of Year 1)",
+                        title: "Swadeshi Indology National Conference I: Foundations of Science, Tech & Epistemology",
+                        venue: "IIT Madras, Chennai",
+                        desc: "A milestone national summit focusing on comparative scientific epistemology, decolonizing research methodologies, and mapping historical Indian achievements in metallurgy and material science."
+                    }
+                ],
+                institutions: [
+                    { name: "Presidency College", loc: "Chennai", theme: "Sangam Philology & Indian Social Frameworks" },
+                    { name: "Madras Christian College (MCC)", loc: "East Tambaram", theme: "Traditional Resource Management & Ecology" },
+                    { name: "IIT Madras", loc: "Chennai", theme: "Historical Metallurgy & Ancient Ship Construction" },
+                    { name: "Anna University", loc: "Guindy, Chennai", theme: "Legacy Hydraulics, Grand Anicut Civil Engineering" },
+                    { name: "Loyola College", loc: "Nungambakkam", theme: "Comparative Epistemology & Cultural Arts" },
+                    { name: "SCSVMV Deemed University", loc: "Kanchipuram", theme: "Sanskrit Grammatical Science & Computational Linguistics" }
+                ]
+            },
+            {
+                title: "Year 2: Delta & Pandyan South Circuit",
+                desc: "Focus Area: Pondicherry, Tiruchirappalli, Thanjavur, Madurai. 1 institution per month.",
+                seminars: [
+                    {
+                        date: "March 2028 (End of Year 2)",
+                        title: "Swadeshi Indology National Conference II: Civil Engineering, Eco-Sastras & Sustainable Agriculture",
+                        venue: "Madurai Kamaraj University, Madurai",
+                        desc: "A multidisciplinary conference exploring historical water management models, traditional soil architectures, eco-conservation ethics, and ancient agriculture (HIST)."
+                    }
+                ],
+                institutions: [
+                    { name: "Pondicherry University", loc: "Kalapet", theme: "Classical Indological Studies & Colonial Transitions" },
+                    { name: "Annamalai University", loc: "Chidambaram", theme: "Chola Bronze Casting Technologies & Dance Sastras" },
+                    { name: "NIT Trichy", loc: "Tiruchirappalli", theme: "Ancient Civil Construction Materials & Lime Mortars" },
+                    { name: "Sastra Deemed University", loc: "Thanjavur", theme: "Ancient Water Infrastructure & Agricultural Sastras" },
+                    { name: "Tamil University", loc: "Thanjavur", theme: "Classical Tamil Epigraphy, Palm Leaf Archeology" },
+                    { name: "Madurai Kamaraj University", loc: "Madurai", theme: "Sangam Era Urban Planning & Keezhadi Excavations" }
+                ]
+            },
+            {
+                title: "Year 3: Industrial West & Deep South Circuit",
+                desc: "Focus Area: Salem, Coimbatore, Erode, Tirunelveli. 1 institution per month.",
+                seminars: [
+                    {
+                        date: "September 2028 (Phase 3 Midpoint)",
+                        title: "Swadeshi Indology National Conference III: Mathematical Traditions, Linguistics & Maritime Science",
+                        venue: "PSG College of Technology, Coimbatore",
+                        desc: "Focusing on Paninian linguistics as precursor algorithms, Vedic mathematics, early shipbuilding, and India's historical global trade relations."
+                    }
+                ],
+                institutions: [
+                    { name: "Periyar University", loc: "Salem", theme: "Historic Mining, Iron Smelting in the Salem Region" },
+                    { name: "PSG College of Technology", loc: "Coimbatore", theme: "Traditional Wootz Steel Manufacturing Technologies" },
+                    { name: "Amrita Vishwa Vidyapeetham", loc: "Coimbatore", theme: "Vedic Mathematics Algorithms & Heritage Computing" },
+                    { name: "Manonmaniam Sundaranar Uni", loc: "Tirunelveli", theme: "Tamirabarani Riverine Culture & Ancient Fishing" },
+                    { name: "V.O. Chidambaram College", loc: "Thoothukudi", theme: "Pearl Diving History, Legacy Maritime Shipbuilding" },
+                    { name: "Government Arts College", loc: "Ooty, Nilgiris", theme: "Toda Tribal Architecture, Ecology, and Needlework" }
+                ]
+            }
+        ];
+
+        const brandingData = [
+            {
+                id: "physical",
+                title: "Physical Asset & Fleet",
+                icon: "&#128666;",
+                items: [
+                    "<b>45% Exterior Vehicle Wrap:</b> High-visibility vinyl wrap displaying donor's logo as 'Principal Patron'.",
+                    "<b>Retractable Canopy:</b> The 4m outdoor shade canopy featuring donor's logo along all borders.",
+                    "<b>Internal Displays:</b> Overhead book panels and digital touchscreen casings with etched co-branded logos.",
+                    "<b>Branded Uniforms:</b> Van pilot, librarian, and coordinators wear standardized uniforms with CSR logo.",
+                    "<b>Exterior Metal Plaque:</b> Brass plaque at entrance acknowledging the vehicle as a CSR gift."
+                ]
+            },
+            {
+                id: "print",
+                title: "Book Publishing & Print",
+                icon: "&#128214;",
+                items: [
+                    "<b>Book Cover Co-Branding:</b> Front/back covers of low-priced HIST paperbacks feature the CSR emblem.",
+                    "<b>Bespoke Foreword Page:</b> Introductory 'Message from the Patron' penned by donor's Chairman/CSR Head.",
+                    "<b>Bilingual Bookplates:</b> Custom stickers inside every donated book: 'Gifted by [Donor] CSR Foundation'.",
+                    "<b>Illustrated Booklets:</b> Footer logos on 20,000+ booklets distributed during campus awareness drives.",
+                    "<b>Study Kits:</b> Slipcases and folders housing materials for faculty/scholars are co-branded."
+                ]
+            },
+            {
+                id: "digital",
+                title: "Digital & AV Outreach",
+                icon: "&#128187;",
+                items: [
+                    "<b>Video Watermarks & Slates:</b> Educational videos begin/end with a 3-second animated CSR intro slate.",
+                    "<b>Co-Branded Portal:</b> The 'Bharat Bodh Digital Repository' features the donor's logo in the header.",
+                    "<b>QR Code Landing Page:</b> Van pamphlets link to a page with a message from the donor's CEO.",
+                    "<b>Newsletter Sponsorship:</b> Monthly updates to 5,000+ stakeholders carry a dedicated 'Donor Spot'.",
+                    "<b>Social Media Campaigns:</b> Co-branded templates and hashtags (e.g., #[DonorName]Cares)."
+                ]
+            },
+            {
+                id: "events",
+                title: "Event & Campus Signage",
+                icon: "&#127915;",
+                items: [
+                    "<b>Stage Backdrops:</b> Registration desks and stages for conferences feature the donor as 'Title Sponsor'.",
+                    "<b>Co-Branded Certificates:</b> Participation certificates for 20,000+ students carry donor signature/logo.",
+                    "<b>Scholar Badges:</b> Customized neck lanyards and name badges for all VIP scholars are co-branded.",
+                    "<b>Pop-Up Standees:</b> Banners around the parked van detailing the donor's vision for heritage preservation.",
+                    "<b>Institutional Welcome Boards:</b> Official invitation letters and college gate standees are co-branded."
+                ]
+            },
+            {
+                id: "hr",
+                title: "Employee Engagement",
+                icon: "&#129410;",
+                items: [
+                    "<b>Corporate Masterclass:</b> Technical employees (engineers, IT) serve as guest lecturers linking ancient to modern.",
+                    "<b>Heritage Weekends:</b> Exclusive architecture walks for executive leadership led by senior IFI scholars.",
+                    "<b>Volun-Touring:</b> Regional employees spend a paid volunteering day traveling with the mobile van.",
+                    "<b>Internal Webinars:</b> Quarterly online series exclusively for the donor's global employees.",
+                    "<b>'Patron's Choice' Awards:</b> Annual research award presented to top mentored scholars at a public ceremony."
+                ]
+            }
+        ];
+
+        // --- GEMINI API INTEGRATION & CHAT/QUIZ UTILITIES ---
+        const apiKey = ""; // Let platform inject the API key automatically
+
+        // Exponential backoff robust fetch utility
+        async function runGeminiRequest(prompt, systemPrompt = "", responseSchema = null) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+
+            if (systemPrompt) {
+                payload.systemInstruction = { parts: [{ text: systemPrompt }] };
+            }
+
+            if (responseSchema) {
+                payload.generationConfig = {
+                    responseMimeType: "application/json",
+                    responseSchema: responseSchema
+                };
+            }
+
+            const fetchOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            };
+
+            let delay = 1000;
+            for (let attempt = 0; attempt < 5; attempt++) {
+                try {
+                    const response = await fetch(endpoint, fetchOptions);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (err) {
+                    // Suppress error console logging as requested
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // Exponential Backoff: 1s -> 2s -> 4s -> 8s -> 16s
+            }
+            throw new Error("Unable to contact Gemini AI services after 5 retries. Please check your internet connection.");
+        }
+
+        // Error Toaster Utilities
+        function showAIError(msg) {
+            const toaster = document.getElementById('ai-error-box');
+            const txt = document.getElementById('ai-error-text');
+            txt.innerText = msg;
+            toaster.classList.remove('hidden');
+        }
+
+        window.closeAIError = function() {
+            document.getElementById('ai-error-box').classList.add('hidden');
+        };
+
+        // Tab switches inside AI Suite
+        window.switchAITab = function(tabName) {
+            const tabs = ['chat', 'quiz', 'symposium'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`ai-tab-${t}`);
+                const pane = document.getElementById(`ai-pane-${t}`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-4 text-center font-bold text-sm transition-all border-b-2 border-brand-accent text-brand-accent bg-white";
+                    pane.classList.remove('hidden');
+                } else {
+                    btn.className = "flex-1 py-4 text-center font-bold text-sm transition-all text-brand-primary hover:bg-white/50 border-b-2 border-transparent";
+                    pane.classList.add('hidden');
+                }
+            });
+        };
+
+        // --- TAB 1: INDOLOGY SCHOLAR AI CHAT ---
+        window.triggerChatPreset = function(promptText) {
+            document.getElementById('chat-user-input').value = promptText;
+            sendChatMessage();
+        };
+
+        async function sendChatMessage() {
+            const inputField = document.getElementById('chat-user-input');
+            const messageText = inputField.value.trim();
+            if (!messageText) return;
+
+            const chatBox = document.getElementById('chat-messages-box');
+            
+            // Append User Message
+            chatBox.innerHTML += `
+                <div class="bg-white p-3 rounded-xl max-w-xl text-sm border border-brand-border self-end ml-auto text-right animate-fade-in">
+                    <b>You:</b> ${messageText}
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            inputField.value = "";
+
+            // Append Loader Indicator
+            const loaderId = "loader-" + Date.now();
+            chatBox.innerHTML += `
+                <div id="${loaderId}" class="bg-brand-surface p-3 rounded-xl max-w-xl text-sm leading-relaxed self-start animate-fade-in">
+                    <b>✨ Indology Scholar AI:</b> Generating scholarly analysis... <span class="animate-pulse">⏳</span>
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const systemPrompt = "You are a senior research fellow at Infinity Foundation India. Your task is to explain Indian scientific, technical, and cultural heritage from an evidence-based, scholarly, and indigenous perspective (avoiding uncritical glorification while remaining self-affirming). Keep responses highly educational, formatted in clean HTML paragraphs, and around 2 to 3 paragraphs max.";
+
+            try {
+                const response = await runGeminiRequest(messageText, systemPrompt);
+                const textOutput = response.candidates?.[0]?.content?.parts?.[0]?.text || "No response received. Please try again.";
+                
+                // Remove loader and append true output
+                document.getElementById(loaderId).remove();
+                chatBox.innerHTML += `
+                    <div class="bg-brand-surface p-3 rounded-xl max-w-xl text-sm leading-relaxed self-start animate-fade-in">
+                        <b>✨ Indology Scholar AI:</b><div class="space-y-2 mt-1">${textOutput}</div>
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                document.getElementById(loaderId).remove();
+                showAIError(error.message);
+            }
+        }
+
+        // --- TAB 2: DYNAMIC IKS QUIZ GENERATOR ---
+        let loadedQuizQuestions = [];
+        let currentQuizIndex = 0;
+        let currentQuizScore = 0;
+
+        window.generateDynamicQuiz = async function() {
+            const topic = document.getElementById('quiz-topic-select').value;
+            const btn = document.getElementById('quiz-gen-btn');
+            
+            closeAIError();
+            btn.disabled = true;
+            btn.innerHTML = "✨ Synthesizing Questions... ⏳";
+
+            // Structured Schema for reliable JSON Generation
+            const quizSchema = {
+                type: "OBJECT",
+                properties: {
+                    questions: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                question: { type: "STRING" },
+                                options: {
+                                    type: "ARRAY",
+                                    items: { type: "STRING" }
+                                },
+                                answerIndex: { type: "INTEGER" },
+                                explanation: { type: "STRING" }
+                            },
+                            required: ["question", "options", "answerIndex", "explanation"]
+                        }
+                    }
+                },
+                required: ["questions"]
+            };
+
+            const systemPrompt = "You are an academic assessor for Indian Knowledge Systems. Generate exactly 3 unique multiple-choice questions on the user's chosen topic. Ensure questions test advanced understanding, historical milestones, and true technical details of IKS. Keep options challenging and provide educational explanations referencing archaeological or scriptural facts.";
+            const prompt = `Generate a 3-question quiz with multiple choice selections on the topic of: ${topic}. Output valid JSON matching the schema.`;
+
+            try {
+                const response = await runGeminiRequest(prompt, systemPrompt, quizSchema);
+                const jsonText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+                const parsedQuiz = JSON.parse(jsonText);
+                
+                loadedQuizQuestions = parsedQuiz.questions;
+                currentQuizIndex = 0;
+                currentQuizScore = 0;
+
+                // Configure Quiz View
+                document.getElementById('quiz-header-topic').innerText = topic;
+                document.getElementById('quiz-active-box').classList.remove('hidden');
+                document.getElementById('quiz-result-box').classList.add('hidden');
+                
+                showQuizQuestion();
+            } catch (err) {
+                showAIError("Quiz Generation Failed: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "✨ Generate Quiz";
+            }
+        };
+
+        function showQuizQuestion() {
+            const currentQ = loadedQuizQuestions[currentQuizIndex];
+            
+            document.getElementById('quiz-question-counter').innerText = `Question ${currentQuizIndex + 1} of 3`;
+            document.getElementById('quiz-question-text').innerText = currentQ.question;
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQ.options.forEach((opt, idx) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "w-full text-left p-4 rounded-xl border border-brand-border bg-white text-sm hover:border-brand-accent transition-all";
+                optBtn.innerText = opt;
+                optBtn.onclick = () => submitQuizAnswer(idx, optBtn);
+                optionsContainer.appendChild(optBtn);
+            });
+        }
+
+        function submitQuizAnswer(selectedIdx, clickedButton) {
+            const currentQ = loadedQuizQuestions[currentQuizIndex];
+            const buttons = document.getElementById('quiz-options-container').querySelectorAll('button');
+            
+            // Disable further choosing
+            buttons.forEach(btn => btn.disabled = true);
+
+            const isCorrect = selectedIdx === currentQ.answerIndex;
+            if (isCorrect) {
+                currentQuizScore++;
+                clickedButton.className = "w-full text-left p-4 rounded-xl border border-green-500 bg-green-50 text-green-900 text-sm font-semibold transition-all";
+                document.getElementById('quiz-correct-indicator').innerText = "✓ Correct Answer!";
+                document.getElementById('quiz-correct-indicator').className = "font-bold block mb-1 text-green-700";
+            } else {
+                clickedButton.className = "w-full text-left p-4 rounded-xl border border-red-500 bg-red-50 text-red-900 text-sm font-semibold transition-all";
+                document.getElementById('quiz-correct-indicator').innerText = "✗ Incorrect Answer!";
+                document.getElementById('quiz-correct-indicator').className = "font-bold block mb-1 text-red-700";
+                
+                // Highlight correct button
+                buttons[currentQ.answerIndex].className = "w-full text-left p-4 rounded-xl border border-green-500 bg-green-50 text-green-900 text-sm font-semibold transition-all";
+            }
+
+            // Expose Explanation
+            document.getElementById('quiz-explanation-text').innerText = currentQ.explanation;
+            document.getElementById('quiz-explanation-box').classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        window.nextQuizQuestion = function() {
+            currentQuizIndex++;
+            if (currentQuizIndex < 3) {
+                showQuizQuestion();
+            } else {
+                // Done
+                document.getElementById('quiz-active-box').classList.add('hidden');
+                document.getElementById('quiz-result-box').classList.remove('hidden');
+                document.getElementById('quiz-final-score').innerText = currentQuizScore;
+            }
+        };
+
+        window.resetQuizView = function() {
+            document.getElementById('quiz-result-box').classList.add('hidden');
+            document.getElementById('quiz-active-box').classList.add('hidden');
+        };
+
+        // --- TAB 3: ✨ SYMPOSIUM ARCHITECT ---
+        window.generateSymposiumSyllabus = async function() {
+            const topic = document.getElementById('symposium-topic-select').value;
+            const tier = document.getElementById('symposium-tier-select').value;
+            const btn = document.getElementById('symposium-gen-btn');
+            const resultBox = document.getElementById('symposium-result-box');
+            const textOutput = document.getElementById('symposium-text-output');
+
+            closeAIError();
+            btn.disabled = true;
+            btn.innerHTML = "✨ Designing Symposium... ⏳";
+            resultBox.classList.add('hidden');
+
+            const systemPrompt = "You are an elite academic program director at Infinity Foundation India. Your goal is to draft a comprehensive, highly professional 4-section syllabus and planning note for a major regional Swadeshi Indology National Conference or seminar matching the chosen topic and target audience tier. Use structured HTML format with clean headings, bold subtitles, and bullet points. Break down the response into: Section 1: Symposium Scope & Core Philosophy, Section 2: Detailed Syllabus & Core Modules, Section 3: Call For Papers (CFP) Snippet with Key Research Tracks, Section 4: Model Academic Abstract and Key Terms (Sanskrit/Tamil). Ground everything in peer-reviewed historical science, avoiding superficial claims.";
+            const prompt = `Architect a complete Academic Symposium Concept Note and Abstract for the topic: "${topic}" targeted at the following audience tier: "${tier}".`;
+
+            try {
+                const response = await runGeminiRequest(prompt, systemPrompt);
+                const text = response.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to generate syllabus details. Please try again.";
+                
+                // Transform linebreaks to paragraphs/headers to look highly formatted
+                const processedText = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .split('\n\n')
+                    .map(p => `<p class="mb-3 leading-relaxed">${p.trim()}</p>`)
+                    .join('');
+
+                textOutput.innerHTML = processedText;
+                resultBox.classList.remove('hidden');
+            } catch (error) {
+                showAIError("Symposium Generation Failed: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "✨ Architect Symposium";
+            }
+        };
+
+        window.copySymposiumElement = function() {
+            const output = document.getElementById('symposium-text-output');
+            const tempText = output.innerText;
+            
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = tempText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+
+            const btn = document.querySelector('#symposium-result-box button');
+            const prev = btn.innerText;
+            btn.innerText = "✓ Copied!";
+            setTimeout(() => btn.innerText = prev, 2000);
+        };
+
+        // --- END OF GEMINI INTEGRATION LOGIC ---
+
+
+        // --- STATE MANAGEMENT (Traditional Components) ---
+        let currentComponentIndex = 0;
+        let currentPhaseIndex = 0;
+        let currentBrandingIndex = 0;
+
+        // --- CORE INTERACTION LOGIC & UI UPDATES ---
+
+        // Render Components Tabs
+        function renderComponents() {
+            const tabsContainer = document.getElementById('component-tabs');
+            const contentContainer = document.getElementById('component-content');
+            
+            tabsContainer.innerHTML = '';
+            
+            componentsData.forEach((comp, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-6 py-4 border-b border-brand-border transition-colors duration-200 flex items-center ${index === currentComponentIndex ? 'bg-white border-l-4 border-l-brand-accent text-brand-accent font-bold' : 'hover:bg-brand-surface/50 text-brand-primary'}`;
+                btn.innerHTML = `<span class="mr-3 text-xl u-icon">${comp.icon}</span> <span class="text-sm">${comp.title}</span>`;
+                btn.onclick = () => {
+                    currentComponentIndex = index;
+                    renderComponents();
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            const activeComp = componentsData[currentComponentIndex];
+            contentContainer.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="text-5xl mb-4 u-icon opacity-80">${activeComp.icon}</div>
+                    <h4 class="text-2xl font-bold text-brand-primary mb-4">${activeComp.title}</h4>
+                    <p class="text-lg text-brand-primary/80 leading-relaxed">${activeComp.desc}</p>
+                </div>
+            `;
+        }
+
+        // Render Geographic Rollout with Conferences highlighted
+        window.setPhase = function(index) {
+            currentPhaseIndex = index;
+            
+            // Update Buttons
+            [0, 1, 2].forEach(i => {
+                const btn = document.getElementById(`btn-phase-${i}`);
+                if (i === index) {
+                    btn.className = "w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-brand-primary text-white shadow-md";
+                } else {
+                    btn.className = "w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-brand-primary border border-brand-border hover:border-brand-accent";
+                }
+            });
+
+            // Update Progress Bar
+            const progress = document.getElementById('timeline-progress');
+            if(progress) {
+                progress.style.width = index === 0 ? '33.33%' : index === 1 ? '66.66%' : '100%';
+            }
+
+            // Update Phase Data
+            const phase = rolloutData[index];
+            document.getElementById('phase-title').innerText = phase.title;
+            document.getElementById('phase-desc').innerText = phase.desc;
+
+            // Highlight Seminars dynamically
+            const seminarsContainer = document.getElementById('major-seminars-container');
+            seminarsContainer.innerHTML = '';
+            
+            phase.seminars.forEach(sem => {
+                seminarsContainer.innerHTML += `
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-brand-accent/30 rounded-2xl p-5 mb-4 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-fade-in">
+                        <div class="space-y-1">
+                            <span class="inline-block bg-brand-accent text-white font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full mb-1">
+                                &#11088; Swadeshi Indology National Conference
+                            </span>
+                            <h4 class="text-lg font-bold text-brand-primary">${sem.title}</h4>
+                            <p class="text-sm text-brand-primary/80">${sem.desc}</p>
+                        </div>
+                        <div class="text-right md:min-w-[180px]">
+                            <div class="font-serif font-bold text-brand-accent text-sm">&#128197; ${sem.date}</div>
+                            <div class="text-xs text-brand-primary/60 font-semibold mt-0.5">&#127979; ${sem.venue}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Populate Institutions
+            const listContainer = document.getElementById('institutions-list');
+            listContainer.innerHTML = '';
+            
+            phase.institutions.forEach(inst => {
+                listContainer.innerHTML += `
+                    <div class="bg-brand-light border border-brand-border rounded-lg p-4 transition-all hover:shadow-md hover:border-brand-accent/50">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-brand-primary text-sm">${inst.name}</h4>
+                            <span class="text-xs bg-brand-surface px-2 py-1 rounded text-brand-primary/70 ml-2 whitespace-nowrap"><span class="u-icon mr-1">&#128205;</span>${inst.loc}</span>
+                        </div>
+                        <p class="text-sm text-brand-accent/90 font-medium leading-snug">${inst.theme}</p>
+                    </div>
+                `;
+            });
+        };
+
+        // Render Branding Section
+        function renderBranding() {
+            const navContainer = document.getElementById('branding-nav');
+            const titleEl = document.getElementById('branding-title');
+            const iconEl = document.getElementById('branding-icon');
+            const itemsContainer = document.getElementById('branding-items');
+            
+            navContainer.innerHTML = '';
+            
+            brandingData.forEach((category, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-4 py-3 rounded-lg transition-all text-sm font-medium ${index === currentBrandingIndex ? 'bg-brand-primary text-white shadow-md' : 'bg-brand-surface text-brand-primary hover:bg-brand-border'}`;
+                btn.innerHTML = `<span class="mr-2 u-icon">${category.icon}</span> ${category.title}`;
+                btn.onclick = () => {
+                    currentBrandingIndex = index;
+                    renderBranding();
+                };
+                navContainer.appendChild(btn);
+            });
+
+            const activeCat = brandingData[currentBrandingIndex];
+            titleEl.innerHTML = activeCat.title;
+            iconEl.innerHTML = activeCat.icon;
+            
+            itemsContainer.innerHTML = '';
+            activeCat.items.forEach(item => {
+                itemsContainer.innerHTML += `
+                    <li class="flex items-start bg-brand-light p-4 rounded-lg border border-brand-border/50">
+                        <span class="text-brand-accent mr-3 mt-1 u-icon">&#10004;</span>
+                        <span class="text-sm leading-relaxed">${item}</span>
+                    </li>
+                `;
+            });
+        }
+
+
+        // --- INITIALIZATION & CHARTS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init Interactive sections
+            renderComponents();
+            setPhase(0);
+            renderBranding();
+
+            // Setup Chart.js Defaults for aesthetics
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#4A3B32';
+            
+            // 1. Budget Doughnut Chart (Refitted to the ₹3.3 Cr / ₹330 Lakh allocation shifts)
+            const ctxBudget = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctxBudget, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Academic & Workshops (30%)', 'Publications & Digital (36.36%)', 'Admin & Contingency (20%)', 'Van CapEx & OpEx (13.64%)'],
+                    datasets: [{
+                        data: [99, 120, 66, 45], // Values in Lakhs (99L, 120L, 66L, 45L)
+                        backgroundColor: [
+                            '#C85A17', // Saffron / Terracotta
+                            '#8C7A6B', // Muted Brown
+                            '#4A3B32', // Deep Earthy Brown
+                            '#E8A375'  // Saffron Light
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // MANDATORY to respect container dimensions
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15, boxWidth: 12, font: { size: 10 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label = label.split(' (')[0] + ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumSignificantDigits: 3 }).format(context.parsed * 100000);
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: 'rgba(74, 59, 50, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            });
+
+            // 2. Beneficiaries Bar Chart
+            const ctxBen = document.getElementById('beneficiariesChart').getContext('2d');
+            new Chart(ctxBen, {
+                type: 'bar',
+                data: {
+                    labels: ['Students (Direct)', 'Faculty Trained', 'Scholars Mentored'],
+                    datasets: [{
+                        label: 'Target Individuals',
+                        data: [20000, 2000, 200],
+                        backgroundColor: '#C85A17',
+                        borderRadius: 6,
+                        barThickness: 'flex',
+                        maxBarThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // MANDATORY to respect container dimensions
+                    scales: {
+                        y: {
+                            type: 'logarithmic', // Log scale due to massive difference between 20k and 200
+                            beginAtZero: true,
+                            grid: { color: '#E2D9D0' },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    if (value === 200 || value === 2000 || value === 20000) return value.toLocaleString();
+                                    return '';
+                                }
+                            },
+                            title: { display: true, text: 'Individuals (Log Scale)', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(74, 59, 50, 0.9)',
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString() + ' Individuals';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
