@@ -5,23 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bharat Bodh: Project Dashboard & AI Suite</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Tailwind Config for Custom Colors -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            light: '#FDFBF7', // Warm off-white background
-                            surface: '#F4EFEA', // Slightly darker for cards
-                            primary: '#4A3B32', // Deep earthy brown for text
-                            accent: '#C85A17', // Terracotta/Saffron accent
+                            light: '#FDFBF7',
+                            surface: '#F4EFEA',
+                            primary: '#4A3B32',
+                            accent: '#C85A17',
                             accentLight: '#E8A375',
                             border: '#E2D9D0'
                         }
@@ -36,7 +32,6 @@
     </script>
 
     <style>
-        /* Chart Container Styling - Mandatory Requirements */
         .chart-container {
             position: relative;
             width: 100%;
@@ -52,7 +47,6 @@
             }
         }
         
-        /* Custom scrollbar for content areas */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -64,39 +58,20 @@
             border-radius: 10px;
         }
 
-        /* Unicode icon styling */
         .u-icon {
             font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             font-style: normal;
         }
     </style>
 
-    <!-- Chosen Palette: Warm Neutrals & Saffron (Brand Light, Surface, Primary Brown, Terracotta Accent). Chosen to reflect Indian heritage, earthiness, and academia while maintaining high modern readability. -->
-    
-    <!-- Application Structure Plan: A centralized, single-page dashboard layout. 
-         Reasoning: The original DPR is a lengthy, dense textual document. To make this "consumable and explorable" for stakeholders (like Fiinovation or CSR donors), a dashboard approach is optimal. 
-         Flow: 
-         1. Executive summary metrics (quick stats at the top).
-         2. The Core Strategy (understanding the Dual-Track approach).
-         3. Interactive Financials & Impact (Charts to visualize budget and reach).
-         4. Geographic Rollout (Interactive timeline/tab system to explore the 3-year plan, highlighting 3 major Swadeshi Indology National Conferences).
-         5. Dynamic AI Suite (Interactive chatbot, quiz engine, and academic symposium architect powered by the Gemini API).
-         6. Components & Branding (Grid layouts for easy scanning of the 9 components and 25 branding elements).
-         This non-linear structure allows donors to instantly find what they care about (Budget, Impact, Branding) while retaining the academic context. -->
-    
-    <!-- Visualization & Content Choices: 
-         - Budget Breakdown -> Doughnut Chart (Chart.js) -> Hover tooltips -> Shows clear % distribution of INR 3.3 Cr.
-         - Target Beneficiaries -> Bar Chart (Chart.js) -> Hover tooltips -> Contrasts the massive student scale vs faculty/scholars.
-         - Geographic Rollout -> JS-driven Interactive Tabs + List -> Clickable phases -> Highlights the 3 Swadeshi Indology National Conferences.
-         - Core Strategy -> CSS styled dual-column layout -> Visualizes the 'Academic' vs 'Van' track clearly.
-         - NO SVG/Mermaid used. CSS styling and Unicode emojis are used for iconography. -->
-    
+    <!-- Chosen Palette: Warm Neutrals & Saffron -->
+    <!-- Application Structure Plan: Single-page responsive dashboard containing quick KPI cards, dual-track explanation, dynamic financial charts, interactive geographic timeline, LLM-powered AI chat/quiz/syllabus generator, and a comprehensive CSR branding matrix. This keeps dense academic project details highly explorable for donors. -->
+    <!-- Visualization & Content Choices: Financials visualized with a custom Chart.js Doughnut chart. Audience reach categorized in a Logarithmic Bar chart to bridge scale disparities. Geographic rollout shown with click-interactive phases showcasing 4 regional events + 1 National Conference per year. Swadeshi Indology National Conferences highlighted dynamically. AI suite implements vanilla JS calls to Gemini API with exponential backoff. Custom CSS controls the responsive canvas aspect-ratio without overflowing the layout. No SVGs or Mermaid JS used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 
 <body class="bg-brand-light text-brand-primary font-sans antialiased overflow-x-hidden">
 
-    <!-- Top Navigation / Header -->
     <header class="sticky top-0 z-50 bg-brand-light/90 backdrop-blur-md border-b border-brand-border shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -119,7 +94,6 @@
                 </div>
             </div>
         </div>
-        <!-- Mobile menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-brand-surface border-b border-brand-border p-4 space-y-2">
             <a href="#overview" class="block text-sm font-medium hover:text-brand-accent">Overview</a>
             <a href="#strategy" class="block text-sm font-medium hover:text-brand-accent">Strategy</a>
@@ -132,7 +106,6 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
 
-        <!-- SECTION 1: Executive Overview -->
         <section id="overview" class="pt-8">
             <div class="text-center max-w-4xl mx-auto mb-10">
                 <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-primary mb-4 leading-tight">
@@ -142,7 +115,6 @@
                     An interactive overview of the 30-month CSR initiative bridging the gap between mainstream tertiary education and India's profound indigenous knowledge systems across Tamil Nadu.
                 </p>
                 
-                <!-- Quick KPI Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
                         <div class="text-2xl mb-2 u-icon text-brand-accent">&#128176;</div>
@@ -156,7 +128,7 @@
                     </div>
                     <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
                         <div class="text-2xl mb-2 u-icon text-brand-accent">&#127979;</div>
-                        <div class="text-2xl font-bold text-brand-primary">36</div>
+                        <div class="text-2xl font-bold text-brand-primary">15</div>
                         <div class="text-xs uppercase tracking-wide text-brand-primary/60 font-semibold mt-1">Premier Campuses</div>
                     </div>
                     <div class="bg-white rounded-xl p-4 shadow-sm border border-brand-border text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-md">
@@ -168,7 +140,6 @@
             </div>
         </section>
 
-        <!-- SECTION 2: Core Strategy & Components -->
         <section id="strategy" class="pt-8">
             <div class="mb-8">
                 <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">The Dual-Track Strategy</h2>
@@ -178,7 +149,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <!-- Academic Track -->
                 <div class="bg-brand-surface rounded-2xl p-8 border border-brand-border relative overflow-hidden group">
                     <div class="absolute top-0 right-0 p-6 opacity-10 text-6xl u-icon transform group-hover:scale-110 transition-transform duration-500">&#128218;</div>
                     <h3 class="text-xl font-bold text-brand-primary mb-2 flex items-center">
@@ -192,7 +162,6 @@
                     </ul>
                 </div>
 
-                <!-- Van Track -->
                 <div class="bg-brand-surface rounded-2xl p-8 border border-brand-border relative overflow-hidden group">
                     <div class="absolute top-0 right-0 p-6 opacity-10 text-6xl u-icon transform group-hover:scale-110 transition-transform duration-500">&#128656;</div>
                     <h3 class="text-xl font-bold text-brand-primary mb-2 flex items-center">
@@ -207,26 +176,20 @@
                 </div>
             </div>
 
-            <!-- Project Components Interactive Tabs -->
             <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
                 <div class="p-6 border-b border-brand-border bg-brand-surface/50">
                     <h3 class="text-xl font-bold text-brand-primary">The 9 Project Components</h3>
                     <p class="text-sm text-brand-primary/70 mt-1">Explore the structural pillars driving the initiative.</p>
                 </div>
                 <div class="flex flex-col md:flex-row h-full md:h-96">
-                    <!-- Tab Headers -->
                     <div class="w-full md:w-1/3 border-r border-brand-border bg-brand-light custom-scroll overflow-y-auto" id="component-tabs">
-                        <!-- Populated by JS -->
                     </div>
-                    <!-- Tab Content -->
                     <div class="w-full md:w-2/3 p-8 bg-white" id="component-content">
-                        <!-- Populated by JS -->
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 3: Impact & Financials -->
         <section id="impact" class="pt-8">
             <div class="mb-8">
                 <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">Data Visualization: Impact & Allocation</h2>
@@ -236,26 +199,22 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Budget Chart -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-border flex flex-col">
                     <h3 class="text-xl font-bold text-brand-primary mb-1">Financial Allocation (INR 3.3 Cr)</h3>
                     <p class="text-sm text-brand-primary/60 mb-6">Percentage breakdown of project funds over 30 months.</p>
                     
                     <div class="flex-grow flex items-center justify-center">
-                        <!-- Mandatory Chart Container -->
                         <div class="chart-container">
                             <canvas id="budgetChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Beneficiaries Chart -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-border flex flex-col">
                     <h3 class="text-xl font-bold text-brand-primary mb-1">Target Beneficiaries</h3>
                     <p class="text-sm text-brand-primary/60 mb-6">Direct audience reach across the Tamil Nadu ecosystem.</p>
                     
                     <div class="flex-grow flex items-center justify-center">
-                        <!-- Mandatory Chart Container -->
                         <div class="chart-container">
                             <canvas id="beneficiariesChart"></canvas>
                         </div>
@@ -264,43 +223,38 @@
             </div>
         </section>
 
-        <!-- SECTION 4: Geographic Rollout with Swadeshi Indology National Conferences -->
         <section id="rollout" class="pt-8">
             <div class="mb-8">
                 <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">Phased Geographic Rollout</h2>
                 <p class="text-brand-primary/80 max-w-3xl leading-relaxed">
-                    To minimize logistical overhead and maximize regional momentum, the Mobile Library Van follows a highly structured, continuous geographical loop. Each geographic phase culminates in a broad **Swadeshi Indology National Conference** co-sponsored by partner universities to consolidate regional research. Explore the rollout schedule below.
+                    To minimize logistical overhead and maximize regional momentum, the Mobile Library Van follows a highly structured, continuous geographical loop. Each phase features exactly **4 major campus events** alongside **1 major Swadeshi Indology National Conference** to cement regional research and scholarship. Explore the rollout schedule below.
                 </p>
             </div>
 
             <div class="bg-brand-surface rounded-2xl border border-brand-border p-6 md:p-8">
                 
-                <!-- Timeline Controls -->
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
                     <button onclick="setPhase(0)" id="btn-phase-0" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-brand-primary text-white shadow-md">
                         Phase 1: Northern Launch
-                        <span class="block text-xs font-normal opacity-80">(Sept - Mar | 12 Campuses)</span>
+                        <span class="block text-xs font-normal opacity-80">(Sept - Mar | 5 Key Milestones)</span>
                     </button>
                     <div class="hidden md:block h-1 flex-grow bg-brand-border relative">
                         <div id="timeline-progress" class="absolute top-0 left-0 h-full bg-brand-accent transition-all duration-500 w-1/3"></div>
                     </div>
                     <button onclick="setPhase(1)" id="btn-phase-1" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-brand-primary border border-brand-border hover:border-brand-accent">
                         Phase 2: Delta & South
-                        <span class="block text-xs font-normal opacity-80">(Apr - Mar | 12 Campuses)</span>
+                        <span class="block text-xs font-normal opacity-80">(Apr - Mar | 5 Key Milestones)</span>
                     </button>
                     <div class="hidden md:block h-1 flex-grow bg-brand-border"></div>
                     <button onclick="setPhase(2)" id="btn-phase-2" class="w-full md:w-auto px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-brand-primary border border-brand-border hover:border-brand-accent">
                         Phase 3: West & Loop
-                        <span class="block text-xs font-normal opacity-80">(Apr - Feb | 12 Campuses)</span>
+                        <span class="block text-xs font-normal opacity-80">(Apr - Feb | 5 Key Milestones)</span>
                     </button>
                 </div>
 
-                <!-- Swadeshi Indology National Conference Highlight (Dynamic) -->
                 <div class="mb-8" id="major-seminars-container">
-                    <!-- Populated dynamically based on phase selection -->
                 </div>
 
-                <!-- Rollout Content Display -->
                 <div class="bg-white rounded-xl p-6 shadow-inner custom-scroll max-h-[500px] overflow-y-auto">
                     <div class="flex items-center justify-between mb-6 border-b border-brand-border pb-4">
                         <div>
@@ -311,14 +265,12 @@
                     </div>
                     
                     <div id="institutions-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <!-- Populated by JS -->
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- SECTION 5: ✨ Interactive AI Suite (Gemini Integration) -->
         <section id="ai-suite" class="pt-8">
             <div class="mb-8">
                 <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">✨ Bharat Bodh Interactive AI Suite</h2>
@@ -328,7 +280,6 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
-                <!-- AI Tabs Header -->
                 <div class="flex border-b border-brand-border bg-brand-surface">
                     <button onclick="switchAITab('chat')" id="ai-tab-chat" class="flex-1 py-4 text-center font-bold text-sm transition-all border-b-2 border-brand-accent text-brand-accent bg-white">
                         <span class="u-icon mr-1">&#128172;</span> ✨ Indology Scholar AI
@@ -341,9 +292,7 @@
                     </button>
                 </div>
 
-                <!-- AI Tab Body Content -->
                 <div class="p-6 min-h-[400px]">
-                    <!-- ERROR TOASTER (Custom Message Box, No alerts) -->
                     <div id="ai-error-box" class="hidden mb-6 bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm rounded-r-lg">
                         <div class="flex justify-between items-center">
                             <span id="ai-error-text">An error occurred.</span>
@@ -351,12 +300,10 @@
                         </div>
                     </div>
 
-                    <!-- TAB 1: Chatbot -->
                     <div id="ai-pane-chat" class="space-y-4">
                         <p class="text-sm text-brand-primary/70 mb-4">
                             Ask our virtual indigenous systems fellow anything regarding ancient Indian science, metallurgy, architecture, agriculture, or Sangam literature.
                         </p>
-                        <!-- Chat suggestions -->
                         <div class="flex flex-wrap gap-2 mb-4">
                             <button onclick="triggerChatPreset('How did ancient Tamils build water harvesting structures like Kallanai?')" class="text-xs bg-brand-surface hover:bg-brand-border px-3 py-1.5 rounded-full transition-colors">
                                 &#128073; Kallanai Hydraulics
@@ -383,7 +330,6 @@
                         </div>
                     </div>
 
-                    <!-- TAB 2: Dynamic Quiz -->
                     <div id="ai-pane-quiz" class="hidden space-y-4">
                         <p class="text-sm text-brand-primary/70">
                             Select a historical topic to dynamically generate a unique 3-question multiple choice quiz sourced from peer-reviewed civilisational research.
@@ -401,7 +347,6 @@
                             </button>
                         </div>
 
-                        <!-- Active Quiz Box -->
                         <div id="quiz-active-box" class="hidden border border-brand-border rounded-xl bg-brand-light p-6 space-y-6">
                             <div class="flex justify-between items-center border-b border-brand-border pb-3">
                                 <span class="text-xs font-bold text-brand-accent uppercase tracking-wider" id="quiz-header-topic">metallurgy</span>
@@ -411,11 +356,9 @@
                             <div class="space-y-4">
                                 <h4 class="text-lg font-bold text-brand-primary" id="quiz-question-text">Dynamic Question Text?</h4>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quiz-options-container">
-                                    <!-- Dynamic Options Buttons -->
                                 </div>
                             </div>
 
-                            <!-- Explanation Feedback -->
                             <div id="quiz-explanation-box" class="hidden p-4 rounded-lg text-sm bg-brand-surface border border-brand-border">
                                 <span class="font-bold block mb-1 text-brand-accent" id="quiz-correct-indicator"></span>
                                 <span id="quiz-explanation-text">Detailed research context goes here...</span>
@@ -428,7 +371,6 @@
                             </div>
                         </div>
 
-                        <!-- Quiz Completion/Result State -->
                         <div id="quiz-result-box" class="hidden border border-brand-border rounded-xl bg-brand-light p-8 text-center space-y-4 max-w-md mx-auto">
                             <span class="text-5xl u-icon text-brand-accent">&#127881;</span>
                             <h4 class="text-2xl font-serif font-bold text-brand-primary">Quiz Complete!</h4>
@@ -439,7 +381,6 @@
                         </div>
                     </div>
 
-                    <!-- TAB 3: ✨ Symposium Architect -->
                     <div id="ai-pane-symposium" class="hidden space-y-4">
                         <p class="text-sm text-brand-primary/70">
                             Planning a regional seminar or major multi-day conference? Select your topic and targeted academic tier to dynamically draft a scholarly concept note, syllabus outline, call-for-papers (CFP) snippet, and a model academic abstract.
@@ -475,7 +416,6 @@
                                 </button>
                             </div>
                             <div class="text-sm text-brand-primary/90 leading-relaxed space-y-3 custom-scroll max-h-96 overflow-y-auto" id="symposium-text-output">
-                                <!-- AI Content -->
                             </div>
                         </div>
                     </div>
@@ -484,7 +424,6 @@
             </div>
         </section>
 
-        <!-- SECTION 6: CSR Branding & Visibility -->
         <section id="branding" class="pt-8 pb-16">
             <div class="mb-8">
                 <h2 class="text-3xl font-serif font-bold text-brand-primary mb-3">CSR Branding & Visibility Integration</h2>
@@ -494,19 +433,15 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- Navigation List -->
                 <div class="md:col-span-1 space-y-2" id="branding-nav">
-                    <!-- Populated by JS -->
                 </div>
                 
-                <!-- Content Display -->
                 <div class="md:col-span-3 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-brand-border">
                     <div class="flex items-center mb-6">
                         <span id="branding-icon" class="text-3xl mr-4 u-icon text-brand-accent"></span>
                         <h3 id="branding-title" class="text-2xl font-bold text-brand-primary">Select a Category</h3>
                     </div>
                     <ul id="branding-items" class="space-y-4 text-brand-primary/80">
-                        <!-- Populated by JS -->
                     </ul>
                 </div>
             </div>
@@ -514,7 +449,6 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-brand-primary text-brand-light py-8 border-t border-brand-primary/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
@@ -528,10 +462,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic -->
     <script>
-        // --- DATA STORAGE ---
-
         const componentsData = [
             { title: "Mobile Library Van", icon: "&#128656;", desc: "Procurement of a 14-seater customized academic resource. Equipped with solar-hybrid systems, curated textbooks, digital kiosks, and retractable outdoor display canopies for campus visits." },
             { title: "Awareness Campaigns", icon: "&#128226;", desc: "1-day sensitization drives on campuses. Focuses on introducing undergraduate students to Indian scientific heritage, sustainable traditional lifestyles, and historical innovations." },
@@ -547,47 +478,43 @@
         const rolloutData = [
             {
                 title: "Year 1: High-Intensity Launch Circuit",
-                desc: "Focus Area: Chennai, Kanchipuram, and Vellore (Northern Cluster). 2 institutions per month.",
+                desc: "Focus Area: Chennai, Kanchipuram, and Vellore (Northern Cluster). Exactly 4 campus events + 1 National Conference.",
                 seminars: [
                     {
                         date: "March 2027 (End of Year 1)",
                         title: "Swadeshi Indology National Conference I: Foundations of Science, Tech & Epistemology",
                         venue: "IIT Madras, Chennai",
-                        desc: "A milestone national summit focusing on comparative scientific epistemology, decolonizing research methodologies, and mapping historical Indian achievements in metallurgy and material science."
+                        desc: "The statewide academic track launcher. Spotlighting Western vs. Indian knowledge systems, historical engineering, and advanced metallurgy."
                     }
                 ],
                 institutions: [
-                    { name: "Presidency College", loc: "Chennai", theme: "Sangam Philology & Indian Social Frameworks" },
-                    { name: "Madras Christian College (MCC)", loc: "East Tambaram", theme: "Traditional Resource Management & Ecology" },
-                    { name: "IIT Madras", loc: "Chennai", theme: "Historical Metallurgy & Ancient Ship Construction" },
-                    { name: "Anna University", loc: "Guindy, Chennai", theme: "Legacy Hydraulics, Grand Anicut Civil Engineering" },
-                    { name: "Loyola College", loc: "Nungambakkam", theme: "Comparative Epistemology & Cultural Arts" },
-                    { name: "SCSVMV Deemed University", loc: "Kanchipuram", theme: "Sanskrit Grammatical Science & Computational Linguistics" }
+                    { name: "Presidency College", loc: "Chennai (Sept 2026)", theme: "Sangam Philology & Indian Social Frameworks" },
+                    { name: "Madras Christian College (MCC)", loc: "East Tambaram (Nov 2026)", theme: "Traditional Resource Management & Ecology" },
+                    { name: "Anna University (CEG Campus)", loc: "Guindy (Jan 2027)", theme: "Legacy Hydraulics, Grand Anicut Civil Engineering" },
+                    { name: "Loyola College", loc: "Nungambakkam (Feb 2027)", theme: "Comparative Epistemology & Cultural Arts" }
                 ]
             },
             {
                 title: "Year 2: Delta & Pandyan South Circuit",
-                desc: "Focus Area: Pondicherry, Tiruchirappalli, Thanjavur, Madurai. 1 institution per month.",
+                desc: "Focus Area: Pondicherry, Tiruchirappalli, Thanjavur, Madurai. Exactly 4 campus events + 1 National Conference.",
                 seminars: [
                     {
                         date: "March 2028 (End of Year 2)",
                         title: "Swadeshi Indology National Conference II: Civil Engineering, Eco-Sastras & Sustainable Agriculture",
                         venue: "Madurai Kamaraj University, Madurai",
-                        desc: "A multidisciplinary conference exploring historical water management models, traditional soil architectures, eco-conservation ethics, and ancient agriculture (HIST)."
+                        desc: "A major multidisciplinary conference exploring historical water management models, traditional soil architectures, eco-conservation ethics, and ancient agriculture (HIST)."
                     }
                 ],
                 institutions: [
-                    { name: "Pondicherry University", loc: "Kalapet", theme: "Classical Indological Studies & Colonial Transitions" },
-                    { name: "Annamalai University", loc: "Chidambaram", theme: "Chola Bronze Casting Technologies & Dance Sastras" },
-                    { name: "NIT Trichy", loc: "Tiruchirappalli", theme: "Ancient Civil Construction Materials & Lime Mortars" },
-                    { name: "Sastra Deemed University", loc: "Thanjavur", theme: "Ancient Water Infrastructure & Agricultural Sastras" },
-                    { name: "Tamil University", loc: "Thanjavur", theme: "Classical Tamil Epigraphy, Palm Leaf Archeology" },
-                    { name: "Madurai Kamaraj University", loc: "Madurai", theme: "Sangam Era Urban Planning & Keezhadi Excavations" }
+                    { name: "National Institute of Technology (NIT-T)", loc: "Trichy (May 2027)", theme: "Ancient Civil Construction Materials & Lime Mortars" },
+                    { name: "Sastra Deemed University", loc: "Thanjavur (Aug 2027)", theme: "Ancient Water Infrastructure & Agricultural Sastras" },
+                    { name: "Alagappa University", loc: "Karaikudi (Nov 2027)", theme: "Heritage Chettinad Architecture & Thermal Ventilation" },
+                    { name: "The American College", loc: "Madurai (Jan 2028)", theme: "Traditional Water Storage Networks & Rainwater Harvesting" }
                 ]
             },
             {
                 title: "Year 3: Industrial West & Deep South Circuit",
-                desc: "Focus Area: Salem, Coimbatore, Erode, Tirunelveli. 1 institution per month.",
+                desc: "Focus Area: Salem, Coimbatore, Erode, Tirunelveli. Exactly 4 campus events + 1 National Conference.",
                 seminars: [
                     {
                         date: "September 2028 (Phase 3 Midpoint)",
@@ -597,12 +524,10 @@
                     }
                 ],
                 institutions: [
-                    { name: "Periyar University", loc: "Salem", theme: "Historic Mining, Iron Smelting in the Salem Region" },
-                    { name: "PSG College of Technology", loc: "Coimbatore", theme: "Traditional Wootz Steel Manufacturing Technologies" },
-                    { name: "Amrita Vishwa Vidyapeetham", loc: "Coimbatore", theme: "Vedic Mathematics Algorithms & Heritage Computing" },
-                    { name: "Manonmaniam Sundaranar Uni", loc: "Tirunelveli", theme: "Tamirabarani Riverine Culture & Ancient Fishing" },
-                    { name: "V.O. Chidambaram College", loc: "Thoothukudi", theme: "Pearl Diving History, Legacy Maritime Shipbuilding" },
-                    { name: "Government Arts College", loc: "Ooty, Nilgiris", theme: "Toda Tribal Architecture, Ecology, and Needlework" }
+                    { name: "Periyar University", loc: "Salem (June 2028)", theme: "Historic Mining, Iron Smelting in the Salem Region" },
+                    { name: "Bharathiyar University", loc: "Coimbatore (Aug 2028)", theme: "Crucible Metallurgy Science, Wootz Steel & Tamil Iron Traditions" },
+                    { name: "Manonmaniam Sundaranar Uni", loc: "Tirunelveli (Nov 2028)", theme: "Tamirabarani Riverine Culture & Ancient Fishing" },
+                    { name: "Government Arts College", loc: "Ooty, Nilgiris (Jan 2029)", theme: "Toda Tribal Architecture, Ecology, and Needlework" }
                 ]
             }
         ];
@@ -670,34 +595,27 @@
             }
         ];
 
-        // --- GEMINI API INTEGRATION & CHAT/QUIZ UTILITIES ---
-        const apiKey = ""; // Let platform inject the API key automatically
+        const apiKey = "";
 
-        // Exponential backoff robust fetch utility
         async function runGeminiRequest(prompt, systemPrompt = "", responseSchema = null) {
             const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }]
             };
-
             if (systemPrompt) {
                 payload.systemInstruction = { parts: [{ text: systemPrompt }] };
             }
-
             if (responseSchema) {
                 payload.generationConfig = {
                     responseMimeType: "application/json",
                     responseSchema: responseSchema
                 };
             }
-
             const fetchOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             };
-
             let delay = 1000;
             for (let attempt = 0; attempt < 5; attempt++) {
                 try {
@@ -705,16 +623,13 @@
                     if (response.ok) {
                         return await response.json();
                     }
-                } catch (err) {
-                    // Suppress error console logging as requested
-                }
+                } catch (err) {}
                 await new Promise(resolve => setTimeout(resolve, delay));
-                delay *= 2; // Exponential Backoff: 1s -> 2s -> 4s -> 8s -> 16s
+                delay *= 2;
             }
             throw new Error("Unable to contact Gemini AI services after 5 retries. Please check your internet connection.");
         }
 
-        // Error Toaster Utilities
         function showAIError(msg) {
             const toaster = document.getElementById('ai-error-box');
             const txt = document.getElementById('ai-error-text');
@@ -726,7 +641,6 @@
             document.getElementById('ai-error-box').classList.add('hidden');
         };
 
-        // Tab switches inside AI Suite
         window.switchAITab = function(tabName) {
             const tabs = ['chat', 'quiz', 'symposium'];
             tabs.forEach(t => {
@@ -742,7 +656,6 @@
             });
         };
 
-        // --- TAB 1: INDOLOGY SCHOLAR AI CHAT ---
         window.triggerChatPreset = function(promptText) {
             document.getElementById('chat-user-input').value = promptText;
             sendChatMessage();
@@ -755,7 +668,6 @@
 
             const chatBox = document.getElementById('chat-messages-box');
             
-            // Append User Message
             chatBox.innerHTML += `
                 <div class="bg-white p-3 rounded-xl max-w-xl text-sm border border-brand-border self-end ml-auto text-right animate-fade-in">
                     <b>You:</b> ${messageText}
@@ -764,7 +676,6 @@
             chatBox.scrollTop = chatBox.scrollHeight;
             inputField.value = "";
 
-            // Append Loader Indicator
             const loaderId = "loader-" + Date.now();
             chatBox.innerHTML += `
                 <div id="${loaderId}" class="bg-brand-surface p-3 rounded-xl max-w-xl text-sm leading-relaxed self-start animate-fade-in">
@@ -779,7 +690,6 @@
                 const response = await runGeminiRequest(messageText, systemPrompt);
                 const textOutput = response.candidates?.[0]?.content?.parts?.[0]?.text || "No response received. Please try again.";
                 
-                // Remove loader and append true output
                 document.getElementById(loaderId).remove();
                 chatBox.innerHTML += `
                     <div class="bg-brand-surface p-3 rounded-xl max-w-xl text-sm leading-relaxed self-start animate-fade-in">
@@ -793,7 +703,6 @@
             }
         }
 
-        // --- TAB 2: DYNAMIC IKS QUIZ GENERATOR ---
         let loadedQuizQuestions = [];
         let currentQuizIndex = 0;
         let currentQuizScore = 0;
@@ -806,7 +715,6 @@
             btn.disabled = true;
             btn.innerHTML = "✨ Synthesizing Questions... ⏳";
 
-            // Structured Schema for reliable JSON Generation
             const quizSchema = {
                 type: "OBJECT",
                 properties: {
@@ -842,7 +750,6 @@
                 currentQuizIndex = 0;
                 currentQuizScore = 0;
 
-                // Configure Quiz View
                 document.getElementById('quiz-header-topic').innerText = topic;
                 document.getElementById('quiz-active-box').classList.remove('hidden');
                 document.getElementById('quiz-result-box').classList.add('hidden');
@@ -880,7 +787,6 @@
             const currentQ = loadedQuizQuestions[currentQuizIndex];
             const buttons = document.getElementById('quiz-options-container').querySelectorAll('button');
             
-            // Disable further choosing
             buttons.forEach(btn => btn.disabled = true);
 
             const isCorrect = selectedIdx === currentQ.answerIndex;
@@ -894,11 +800,9 @@
                 document.getElementById('quiz-correct-indicator').innerText = "✗ Incorrect Answer!";
                 document.getElementById('quiz-correct-indicator').className = "font-bold block mb-1 text-red-700";
                 
-                // Highlight correct button
                 buttons[currentQ.answerIndex].className = "w-full text-left p-4 rounded-xl border border-green-500 bg-green-50 text-green-900 text-sm font-semibold transition-all";
             }
 
-            // Expose Explanation
             document.getElementById('quiz-explanation-text').innerText = currentQ.explanation;
             document.getElementById('quiz-explanation-box').classList.remove('hidden');
             document.getElementById('quiz-next-btn').classList.remove('hidden');
@@ -909,7 +813,6 @@
             if (currentQuizIndex < 3) {
                 showQuizQuestion();
             } else {
-                // Done
                 document.getElementById('quiz-active-box').classList.add('hidden');
                 document.getElementById('quiz-result-box').classList.remove('hidden');
                 document.getElementById('quiz-final-score').innerText = currentQuizScore;
@@ -921,7 +824,6 @@
             document.getElementById('quiz-active-box').classList.add('hidden');
         };
 
-        // --- TAB 3: ✨ SYMPOSIUM ARCHITECT ---
         window.generateSymposiumSyllabus = async function() {
             const topic = document.getElementById('symposium-topic-select').value;
             const tier = document.getElementById('symposium-tier-select').value;
@@ -941,7 +843,6 @@
                 const response = await runGeminiRequest(prompt, systemPrompt);
                 const text = response.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to generate syllabus details. Please try again.";
                 
-                // Transform linebreaks to paragraphs/headers to look highly formatted
                 const processedText = text
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .split('\n\n')
@@ -975,17 +876,20 @@
             setTimeout(() => btn.innerText = prev, 2000);
         };
 
-        // --- END OF GEMINI INTEGRATION LOGIC ---
-
-
-        // --- STATE MANAGEMENT (Traditional Components) ---
         let currentComponentIndex = 0;
         let currentPhaseIndex = 0;
         let currentBrandingIndex = 0;
 
-        // --- CORE INTERACTION LOGIC & UI UPDATES ---
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
 
-        // Render Components Tabs
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
         function renderComponents() {
             const tabsContainer = document.getElementById('component-tabs');
             const contentContainer = document.getElementById('component-content');
@@ -1013,11 +917,9 @@
             `;
         }
 
-        // Render Geographic Rollout with Conferences highlighted
         window.setPhase = function(index) {
             currentPhaseIndex = index;
             
-            // Update Buttons
             [0, 1, 2].forEach(i => {
                 const btn = document.getElementById(`btn-phase-${i}`);
                 if (i === index) {
@@ -1027,18 +929,15 @@
                 }
             });
 
-            // Update Progress Bar
             const progress = document.getElementById('timeline-progress');
             if(progress) {
                 progress.style.width = index === 0 ? '33.33%' : index === 1 ? '66.66%' : '100%';
             }
 
-            // Update Phase Data
             const phase = rolloutData[index];
             document.getElementById('phase-title').innerText = phase.title;
             document.getElementById('phase-desc').innerText = phase.desc;
 
-            // Highlight Seminars dynamically
             const seminarsContainer = document.getElementById('major-seminars-container');
             seminarsContainer.innerHTML = '';
             
@@ -1060,7 +959,6 @@
                 `;
             });
 
-            // Populate Institutions
             const listContainer = document.getElementById('institutions-list');
             listContainer.innerHTML = '';
             
@@ -1077,7 +975,6 @@
             });
         };
 
-        // Render Branding Section
         function renderBranding() {
             const navContainer = document.getElementById('branding-nav');
             const titleEl = document.getElementById('branding-title');
@@ -1112,31 +1009,26 @@
             });
         }
 
-
-        // --- INITIALIZATION & CHARTS ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Init Interactive sections
             renderComponents();
             setPhase(0);
             renderBranding();
 
-            // Setup Chart.js Defaults for aesthetics
             Chart.defaults.font.family = "'Inter', sans-serif";
             Chart.defaults.color = '#4A3B32';
             
-            // 1. Budget Doughnut Chart (Refitted to the ₹3.3 Cr / ₹330 Lakh allocation shifts)
             const ctxBudget = document.getElementById('budgetChart').getContext('2d');
             new Chart(ctxBudget, {
                 type: 'doughnut',
                 data: {
                     labels: ['Academic & Workshops (30%)', 'Publications & Digital (36.36%)', 'Admin & Contingency (20%)', 'Van CapEx & OpEx (13.64%)'],
                     datasets: [{
-                        data: [99, 120, 66, 45], // Values in Lakhs (99L, 120L, 66L, 45L)
+                        data: [99, 120, 66, 45],
                         backgroundColor: [
-                            '#C85A17', // Saffron / Terracotta
-                            '#8C7A6B', // Muted Brown
-                            '#4A3B32', // Deep Earthy Brown
-                            '#E8A375'  // Saffron Light
+                            '#C85A17',
+                            '#8C7A6B',
+                            '#4A3B32',
+                            '#E8A375'
                         ],
                         borderWidth: 0,
                         hoverOffset: 4
@@ -1144,7 +1036,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false, // MANDATORY to respect container dimensions
+                    maintainAspectRatio: false,
                     cutout: '65%',
                     plugins: {
                         legend: {
@@ -1172,7 +1064,6 @@
                 }
             });
 
-            // 2. Beneficiaries Bar Chart
             const ctxBen = document.getElementById('beneficiariesChart').getContext('2d');
             new Chart(ctxBen, {
                 type: 'bar',
@@ -1189,14 +1080,14 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false, // MANDATORY to respect container dimensions
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
-                            type: 'logarithmic', // Log scale due to massive difference between 20k and 200
+                            type: 'logarithmic',
                             beginAtZero: true,
                             grid: { color: '#E2D9D0' },
                             ticks: {
-                                callback: function(value, index, values) {
+                                callback: function(value) {
                                     if (value === 200 || value === 2000 || value === 20000) return value.toLocaleString();
                                     return '';
                                 }
